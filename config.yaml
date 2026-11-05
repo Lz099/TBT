@@ -1,0 +1,71 @@
+# Configuration centrale du TradingBot.
+# Toute constante de simulation vit ici plutôt qu'en dur dans le code,
+# pour que les backtests/paper trading restent reproductibles et ajustables
+# sans toucher au code.
+
+exchange:
+  id: binance
+  # Aucune clé API requise : uniquement des endpoints publics (klines, funding, depth).
+  # AUCUNE clé de trading réel ne doit jamais être ajoutée à ce fichier ou au projet.
+
+symbols:
+  - BTC/USDT
+  - ETH/USDT
+
+timeframes:
+  - "5m"
+  - "1h"
+  - "1d"
+
+history:
+  start_date: "2019-01-01"   # profondeur d'historique pour l'entraînement/backtesting
+  storage_dir: "data/storage"
+
+portfolio:
+  initial_cash_usdt: 10000.0
+  max_exposure_per_asset_pct: 0.5      # 50% max du capital sur un seul actif
+  max_combined_exposure_pct: 0.7       # 70% max exposition crypto totale (BTC+ETH combinés)
+  correlation_window_days: 30
+  high_correlation_threshold: 0.7      # au-delà, l'exposition combinée autorisée est réduite
+
+costs:
+  taker_fee_pct: 0.001                 # 0.1%, frais taker Binance spot standard
+  slippage_model: "sqrt_impact"        # voir backtest/slippage.py
+  slippage_impact_coefficient: 0.8     # Y dans I(Q) = Y * sigma * sqrt(Q / V)
+
+risk:
+  atr_period: 14
+  target_volatility_pct: 0.12          # volatilité de portefeuille annualisée ciblée
+  chandelier_atr_multiplier_1d: 3.0
+  chandelier_atr_multiplier_intraday: 2.0
+  chandelier_lookback_1d: 22
+  chandelier_lookback_intraday: 10
+  kelly_fraction_cap: 0.5              # plafond secondaire optionnel, jamais moteur principal
+
+reward:
+  drawdown_penalty_lambda: 1.0
+  cost_penalty_lambda: 1.0
+  drawdown_alert_threshold_pct: 0.15
+
+validation:
+  walk_forward_train_days: 365
+  walk_forward_test_days: 90
+  walk_forward_step_days: 90
+  frozen_test_start: "2024-01-01"      # jamais consulté pendant le développement/tuning
+
+stress_periods:
+  - name: "covid_crash_2020"
+    start: "2020-02-15"
+    end: "2020-04-15"
+  - name: "luna_collapse_2022"
+    start: "2022-05-01"
+    end: "2022-05-31"
+  - name: "ftx_collapse_2022"
+    start: "2022-11-01"
+    end: "2022-11-30"
+  - name: "low_volatility_2023"
+    start: "2023-06-01"
+    end: "2023-09-01"
+
+dashboard:
+  refresh_interval_seconds: 15

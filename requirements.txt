@@ -1,0 +1,49 @@
+# --- Données & marché ---
+ccxt>=4.3.0
+pandas>=2.2.0
+numpy>=1.26.0
+pyarrow>=16.0.0
+requests>=2.31.0
+pyyaml>=6.0.1
+
+# --- Deep learning / RL ---
+# ATTENTION GPU/CUDA — `pip install -r requirements.txt` seul installe la
+# version CPU-only de torch (celle publiée sur PyPI standard), MÊME sur une
+# machine avec un GPU NVIDIA (l'entraînement tourne alors à 100% CPU et le GPU
+# reste inutilisé).
+# torch avec support CUDA n'est PAS sur PyPI : il faut l'installer depuis
+# l'index PyTorch dédié, un exécutable SÉPARÉ de ce fichier requirements.txt.
+#
+# Sur une machine avec GPU NVIDIA (recommandé pour l'entraînement RL) :
+#   1. pip install -r requirements.txt   (installe tout, torch en CPU par défaut)
+#   2. pip uninstall -y torch
+#   3. pip install torch --index-url https://download.pytorch.org/whl/cu128
+#      (cu128 = CUDA 12.8 ; vérifier la version CUDA du pilote avec `nvidia-smi`
+#      et choisir l'index correspondant sur https://pytorch.org/get-started/locally/
+#      si différent — cu128 fonctionne avec les pilotes CUDA 12.8 ET ultérieurs
+#      grâce à la compatibilité ascendante NVIDIA)
+#   4. Vérifier : python -c "import torch; print(torch.cuda.is_available())"
+#      doit afficher True.
+#
+# Sur une machine sans GPU (ou GPU non-NVIDIA) : `pip install -r requirements.txt`
+# seul suffit, l'entraînement tournera sur CPU (fonctionnel mais lent).
+torch>=2.3.0
+gymnasium>=0.29.1
+stable-baselines3>=2.3.0
+hmmlearn>=0.3.2
+
+# --- Backtesting / métriques ---
+scipy>=1.13.0
+
+# --- Dashboard ---
+# Version figée volontairement (pas de >=) : la 1.62.0 provoquait un bug de
+# rendu sur cette installation (onglets st.tabs() vides sans erreur serveur
+# ni JS). 1.38.0 est une version stable largement éprouvée en production.
+streamlit==1.38.0
+plotly>=5.22.0
+
+# --- Stockage runs ---
+sqlalchemy>=2.0.0
+
+# --- Contrôle de processus (dashboard) ---
+psutil>=5.9.0

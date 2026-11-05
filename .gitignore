@@ -1,0 +1,30 @@
+# Données de marché (retéléchargées par data/fetch_*.py)
+data/storage/*
+!data/storage/.gitkeep
+
+# Modèles entraînés (régénérés par models/train_pipeline.py)
+storage/models/*
+!storage/models/.gitkeep
+
+# État d'exécution (base SQLite, logs, états de processus)
+storage/runs/*.db
+storage/runs/process_state/
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Éditeurs / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
